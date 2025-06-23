@@ -1,0 +1,88 @@
+Build a responsive, secure web application named AppWiseKids Dashboard – a platform designed for parents to monitor and manage their child's mobile app usage and screen time.
+The platform should integrate the concept of AppWise Smart Badges for app safety ratings and provide real-time alerts for risky app behavior.
+
+🔑 Core Features:
+User Authentication System:
+
+Separate roles: Parent and Child (connected device).
+
+Secure login/signup with password encryption.
+
+Parental Dashboard (Main Panel):
+
+Visual overview of:
+
+Child's daily/weekly screen time stats (bar graph or pie chart).
+
+Recently installed apps (with AppWise Smart Badge).
+
+Risk alerts for high-risk apps.
+
+Real-time notifications (mocked) when:
+
+A new app is installed.
+
+Screen time exceeds preset limits.
+
+A flagged app (red or “High Risk” badge) is detected.
+
+Smart App Badge Integration:
+
+Every app entry must display a badge:
+
+🟢 Green – Safe and age-appropriate.
+
+🟡 Yellow – Moderate caution.
+
+🔴 Red – High risk or inappropriate.
+
+Badges come with short expert review summaries.
+
+App Control Settings:
+
+Parents can:
+
+View app info.
+
+Toggle "Restrict App" to block usage (simulate this).
+
+Set screen time caps per app or per day.
+
+Child Device Simulation Page:
+
+Simple interface showing a list of apps installed.
+
+When a child installs a new app, simulate data being sent to the parent dashboard.
+
+Notifications & Alerts Page:
+
+Timeline or inbox-style layout of recent alerts:
+
+“New App Installed: TikTok – Risk Level: 🔴 High.”
+
+“Daily screen time limit exceeded by 45 minutes.”
+
+“App restriction enforced: Roblox is blocked.”
+
+Settings Page:
+
+For parents to set:
+
+Daily screen time limit (hours/minutes).
+
+Auto-block apps with 🔴 High Risk Badge.
+
+Email or SMS notifications (mocked).
+
+About & Support Page:
+
+Vision of AppWiseKids, contact info, FAQs.
+
+💡 Design Style Guidelines:
+Friendly but professional look.
+
+Use soft blues, greens, and whites for trust and clarity.
+
+Mobile-first design (fully responsive).
+
+Accessible for users with basic digital literacy.
