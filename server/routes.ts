@@ -5,8 +5,8 @@ import { loginSchema, insertChildAppSchema, insertAlertSchema, insertSettingsSch
 import bcrypt from "bcrypt";
 import { z } from "zod";
 
-interface CustomRequest extends Request {
-  session: {
+declare module "express-session" {
+  interface SessionData {
     userId?: number;
     user?: {
       id: number;
@@ -14,8 +14,7 @@ interface CustomRequest extends Request {
       email: string;
       role: string;
     };
-    destroy: (callback?: (err?: any) => void) => void;
-  };
+  }
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -29,8 +28,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   };
 
   // Login endpoint
-  app.post("/api/auth/login", async (req, res) => {
+  app.post("/api/auth/login", async (req: any, res: any) => {
     try {
+      console.log("Login request body:", req.body);
       const { username, password } = loginSchema.parse(req.body);
       
       const user = await storage.getUserByUsername(username);
@@ -61,6 +61,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       });
     } catch (error) {
+      console.log("Login error:", error);
       res.status(400).json({ message: "Invalid request data" });
     }
   });
