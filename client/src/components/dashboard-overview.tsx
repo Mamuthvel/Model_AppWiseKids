@@ -40,8 +40,12 @@ export function DashboardOverview({ selectedChildId }: DashboardOverviewProps) {
     enabled: !!selectedChildId,
   });
 
+  if (!child) {
+    return <div>Loading...</div>;
+  }
+
   // Calculate stats
-  const totalScreenTimeToday = childApps.reduce((total, ca) => total + (ca.screenTimeToday || 0), 0);
+  const totalScreenTimeToday = Array.isArray(childApps) ? childApps.reduce((total: number, ca: any) => total + (ca.screenTimeToday || 0), 0) : 0;
   const screenTimeHours = Math.floor(totalScreenTimeToday / 60);
   const screenTimeMinutes = totalScreenTimeToday % 60;
   const screenTimeText = `${screenTimeHours}h ${screenTimeMinutes}m`;
@@ -49,18 +53,16 @@ export function DashboardOverview({ selectedChildId }: DashboardOverviewProps) {
   const dailyLimit = settings?.dailyScreenTimeLimit || 180;
   const screenTimeProgress = Math.min((totalScreenTimeToday / dailyLimit) * 100, 100);
   
-  const recentAlerts = alerts.filter(alert => alert.childId === selectedChildId).slice(0, 3);
-  const pendingAlerts = alerts.filter(alert => !alert.isRead && alert.childId === selectedChildId).length;
+  const recentAlerts = Array.isArray(alerts) ? alerts.filter((alert: any) => alert.childId === selectedChildId).slice(0, 3) : [];
+  const pendingAlerts = Array.isArray(alerts) ? alerts.filter((alert: any) => !alert.isRead && alert.childId === selectedChildId).length : 0;
 
-  const safetyBadgeCounts = childApps.reduce((counts, ca) => {
-    const badge = ca.app.safetyBadge;
-    counts[badge] = (counts[badge] || 0) + 1;
+  const safetyBadgeCounts = Array.isArray(childApps) ? childApps.reduce((counts: any, ca: any) => {
+    const badge = ca.app?.safetyBadge;
+    if (badge) {
+      counts[badge] = (counts[badge] || 0) + 1;
+    }
     return counts;
-  }, {} as Record<string, number>);
-
-  if (!child) {
-    return <div>Loading...</div>;
-  }
+  }, {} as Record<string, number>) : {};
 
   return (
     <div className="space-y-6">
@@ -76,12 +78,12 @@ export function DashboardOverview({ selectedChildId }: DashboardOverviewProps) {
             <div className="bg-neutral-50 rounded-lg p-4">
               <div className="flex items-center space-x-3">
                 <Avatar className="w-12 h-12">
-                  <AvatarImage src={child.profileImage || ""} />
-                  <AvatarFallback>{child.name.charAt(0)}</AvatarFallback>
+                  <AvatarImage src={child?.profileImage || ""} />
+                  <AvatarFallback>{child?.name?.charAt(0) || "?"}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-medium text-gray-900">{child.name}</p>
-                  <p className="text-sm text-neutral-600">Age {child.age} • {child.deviceInfo}</p>
+                  <p className="font-medium text-gray-900">{child?.name || "Unknown"}</p>
+                  <p className="text-sm text-neutral-600">Age {child?.age || 0} • {child?.deviceInfo || "Unknown device"}</p>
                 </div>
               </div>
             </div>
@@ -201,8 +203,8 @@ export function DashboardOverview({ selectedChildId }: DashboardOverviewProps) {
                     className="flex items-center space-x-4 p-4 border border-neutral-200 rounded-lg hover:shadow-md transition-shadow"
                   >
                     <img
-                      src={childApp.app.iconUrl || ""}
-                      alt={childApp.app.name}
+                      src={childApp.app?.iconUrl || "https://via.placeholder.com/48/f1f5f9/64748b?text=App"}
+                      alt={childApp.app?.name || "App"}
                       className="w-12 h-12 rounded-lg object-cover"
                       onError={(e) => {
                         e.currentTarget.src = "https://via.placeholder.com/48/f1f5f9/64748b?text=App";
@@ -210,12 +212,12 @@ export function DashboardOverview({ selectedChildId }: DashboardOverviewProps) {
                     />
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-1">
-                        <h4 className="font-medium text-gray-900">{childApp.app.name}</h4>
-                        <AppBadge safetyLevel={childApp.app.safetyBadge as any} />
+                        <h4 className="font-medium text-gray-900">{childApp.app?.name || "Unknown App"}</h4>
+                        <AppBadge safetyLevel={childApp.app?.safetyBadge || "safe"} />
                       </div>
-                      <p className="text-sm text-neutral-600">{childApp.app.category} • Age {childApp.app.ageRating}+</p>
+                      <p className="text-sm text-neutral-600">{childApp.app?.category || "Unknown"} • Age {childApp.app?.ageRating || 0}+</p>
                       <p className="text-xs text-neutral-500">
-                        Installed {formatDistanceToNow(new Date(childApp.installedAt), { addSuffix: true })}
+                        Installed {childApp.installedAt ? formatDistanceToNow(new Date(childApp.installedAt), { addSuffix: true }) : "Unknown"}
                       </p>
                       {childApp.isBlocked && (
                         <Badge variant="destructive" className="mt-1 text-xs">Blocked</Badge>

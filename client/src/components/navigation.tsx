@@ -1,5 +1,4 @@
-import { useState } from "react";
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Bell, Home, Smartphone, AlertTriangle, Settings, Shield, Menu, X } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";

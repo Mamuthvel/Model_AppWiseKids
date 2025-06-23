@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
